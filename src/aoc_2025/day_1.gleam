@@ -31,21 +31,25 @@ pub fn parse(input: String) -> List(Rotation) {
 }
 
 pub fn pt_1(input: List(Rotation)) {
-  list.map_fold(input, 50, fn(position, rotation) {
+  list.fold(input, #(50, 0), fn(acc, rotation) {
+    let #(position, zeros) = acc
     let Rotation(direction, magnitude) = rotation
     let d = case direction {
       Left -> -1
       Right -> 1
     }
     let assert Ok(new_position) = int.modulo({ position + d * magnitude }, 100)
-    #(new_position, new_position)
+    case new_position == 0 {
+      True -> #(new_position, zeros + 1)
+      False -> #(new_position, zeros)
+    }
   })
   |> pair.second
-  |> list.count(fn(p) { p == 0 })
 }
 
 pub fn pt_2(input: List(Rotation)) {
-  list.map_fold(input, 50, fn(position, rotation) {
+  list.fold(input, #(50, 0), fn(acc, rotation) {
+    let #(position, zeros) = acc
     let Rotation(direction, magnitude) = rotation
     let d = case direction {
       Left -> -1
@@ -57,12 +61,11 @@ pub fn pt_2(input: List(Rotation)) {
     // int.modulo gives us what we want
     let assert Ok(new_position) = int.modulo(new_position_unmodded, 100)
     let num_turns = int.absolute_value(new_position_unmodded) / 100
-    let num_zeros = case position != 0 && new_position_unmodded <= 0 {
+    let new_zeros = case position != 0 && new_position_unmodded <= 0 {
       True -> num_turns + 1
       False -> num_turns
     }
-    #(new_position, num_zeros)
+    #(new_position, zeros + new_zeros)
   })
   |> pair.second
-  |> int.sum
 }
