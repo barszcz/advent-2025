@@ -9,6 +9,9 @@ pub fn parse(input: String) -> List(List(Int)) {
   line |> string.split("") |> list.map(parsing.parse_int)
 }
 
+// 1. find max battery within array, ignoring last (n - 1) batteries
+// 2. take index of that max, find max battery from that point forward in array, ignoring last (n - 2) batteries
+// 3. Repeat until we've filled up our digit list, then convert to a number
 fn find_joltage(batteries: List(Int), num_digits: Int) -> Int {
   let len = list.length(batteries)
   list.range(num_digits - 1, 0)
