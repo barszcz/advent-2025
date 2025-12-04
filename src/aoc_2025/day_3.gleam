@@ -34,10 +34,14 @@ fn find_joltage(batteries: List(Int), num_digits: Int) -> Int {
   |> parsing.must
 }
 
+fn find_total_joltage(input: List(List(Int)), num_digits: Int) -> Int {
+  input |> list.map(find_joltage(_, num_digits)) |> int.sum
+}
+
 pub fn pt_1(input: List(List(Int))) {
-  input |> list.map(find_joltage(_, 2)) |> int.sum
+  find_total_joltage(input, 2)
 }
 
 pub fn pt_2(input: List(List(Int))) {
-  input |> list.map(find_joltage(_, 12)) |> int.sum
+  find_total_joltage(input, 12)
 }
